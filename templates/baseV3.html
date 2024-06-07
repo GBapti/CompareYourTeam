@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Mon Site Bootstrap</title>
+    <!-- Liens vers les fichiers Bootstrap CSS et JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.standalone.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        $(document).ready(function() {
+            var minDateDebut = new Date('{{ date_minimum_debut }}');
+            var maxDateDebut = new Date('{{ date_maximum_début }}');
+            var minDateFin = new Date('{{ date_minimum_fin }}');
+            var maxDateFin = new Date('{{ date_maximum_fin }}');
+
+            // Initialisation du sélecteur de date pour la date de début
+            $('#datepickerDebut').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+                clearBtn: true,
+                startDate: minDateDebut,
+                endDate: maxDateDebut
+            }).on('changeDate', function() {
+                $('form[name="FormulaireDate"]').submit();
+            });
+
+            // Initialisation du sélecteur de date pour la date de fin
+            $('#datepickerFin').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+                clearBtn: true,
+                startDate: minDateFin,
+                endDate: maxDateFin
+            }).on('changeDate', function() {
+                $('form[name="FormulaireDate"]').submit();
+            });
+        });
+    </script>
+    {% block css_script %}
+    {% endblock %}
+</head>
+<body>
+    <nav style="background-color:#DAE6FF; padding:5px">
+        <div class = "row" style=" margin-right: auto; margin-left: auto;">
+            <div class="col-1" style="display:flex; align-items: center; justify-content: center;">
+                <button id="sidebarToggle" class="btn ms-0 me-3" type="button">
+                    <img src="{{ url_for('static', filename='img/barre_de_menu_Icon.png') }}" height="30">
+                </button>
+            </div>
+            <div class="col-3" style="display:flex; align-items: center; justify-content: center;">
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Etude de données
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ url_for('accueil_selection_unique') }}">Sélection Unique</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('accueil_selection_multiple') }}">Sélections multiples</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-4" style="display:flex; align-items: center; justify-content: center;">
+                <a class="navbar-brand d-flex align-items-center mx-auto" href="{{ url_for('home') }}">
+                    <img src="{{ url_for('static', filename='img/Site_Icon.png') }}" alt="Logo" height="55" class="d-inline-block align-left">
+                    <h1>Compare Your Team</h1>
+                </a>
+            </div>
+            <div class="col-3"  style="display:flex; align-items: center; justify-content: center;">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="button">Se connecter</button>
+            </div>
+            <div class="col-1" style="display:flex; align-items: center; justify-content: center;">
+                <button id="monBouton"  class="btn" style="outline: none;">
+                    <img src="{{ url_for('static', filename='img/information_Icon.png') }}" height="30">
+                </button>
+
+            </div>
+        </div>
+    </nav>
+    <div id="maFenetreContextuelle" class="cache">
+        <h1>Bienvene sur Compare Your Team</h1>
+        <p>Cet outil est consacré à présenter des tableaux de bords sur le sport. Les résultats apparaitront dans le grand bloc blanc ci-dessous.</p>
+        <p>La <strong>sélection unique</strong> vous permettra de tous savoir sur un club, une compétion, une nation ou un joueur en particulier. La <strong>sélection multiple</strong> vous permettra de comparer 2 équipes.</p>
+        <p>Vous avez la possibilité de choisir la période que vous souhaitez dans la barre bleu marine ci-dessous.</p>
+        <div style="display:flex;">
+            <p>Pour mieux visualisater le tableau de bord, il est possible d'enlever la barre sur le coté gauche en appuyant sur cet icon:</p>
+            <img src="{{ url_for('static', filename='img/barre_de_menu_Icon.png') }}" height="20">
+        </div>
+        <h2>Sélection Unique</h2>
+        <p>Vous arrivez sur l'écran de sélection unique.</p>
+        <p>Vous avez la possibilité de choisir les filtres dans la barre bleu marine à gauche.</p>
+        <p>Vous pouvez sélectionner une équipe ou une compétition.</p>
+        <h4>Si vous sélectionnez une équipe :</h4>
+        <p>Les compétitions auxquelles l'équipe à participer vont apparaitre en dessous du sélecteur dans le but d'ajouter des filtres sur les données.</p>
+        <h4>Si vous sélectionnez une compétition :</h4>
+        <p>Les équipes ayant participées à la compétition vont apparaitre en dessous du sélecteur dans le but d'ajouter des filtres sur les données.</p>
+        <h2>Sélection Multiple</h2>
+        <p>Vous devez sélectionner 2 équipes dans la barre bleu marine à gauche.</p>
+
+        <button id="fermerBouton">Fermer</button>
+    </div>
+
+    <div class="container-fluid" >
+        <div class="row">
+
+            <div class="col-3 sidebar-filtre">
+                <div class="sidebar">
+                    {% block filtre %}
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="col-lg-9 col-12" style="padding-left:0px;padding-right:0px;">
+                <!--<nav class="navbar navbar-date" style="padding-left:0px;padding-right:0px;">-->
+                    <div class=" navbar-date" style="padding-left:0px;padding-right:0px;">
+                        <div class="row" style=" margin-right: auto; margin-left: auto;">
+                            <div class="col-5">
+                                <form name="FormulaireDate" {% block redirection_date1 %}{% endblock %} method="post" class="d-flex">
+                                    <input type="hidden" name="form_name" value="FormulaireDate">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label class="custom-label" for="datepickerDebut">Date de début:</label>
+                                                <input type="text" class="form-control custom-input" id="datepickerDebut" name="selected_date_Début" value="{{ dateDebutUse }}" style="text-align:center;">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label class="custom-label" for="datepickerFin">Date de fin:</label>
+                                                <input type="text" class="form-control custom-input" id="datepickerFin" name="selected_date_Fin" value="{{ dateFinUse }}" style="text-align:center;">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                            <div class="col-2">
+                                <form name="FormulaireReinitialisationDate" {% block redirection_date2 %}{% endblock %} method="post" class="d-flex">
+                                    <button type="submit" name="ReinitialisationDate" class="btn btn-secondary">Réinitialisation des dates</button>
+                                </form>
+                            </div>
+                            <div class="col-5">
+
+                            </div>
+                        </div>
+                    </div>
+                <!--</nav>-->
+
+                <div class="main-content px-3">
+                    {% block tableau_bord %}
+                    {% endblock %}
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="barre_bas" style="background-color:#DAE6FF; text-align:center; padding:5px; ">
+        <div class="row" style=" margin-right: auto; margin-left: auto;">
+            <div class="col-4">
+                <h5>Contacts</h5>
+                <p><small>bapti.gros@gmail.com</small></p>
+                <p><small>+ 33 6 .. .. .. ..</small></p>
+            </div>
+            <div class="col-4">
+
+                <h5>Réseaux</h5>
+
+                <div class="row">
+                    <div class="col-4">
+                        <img src="{{ url_for('static', filename='img/instagram.png') }}" height="40">
+                    </div>
+                    <div class="col-4">
+                        <img src="{{ url_for('static', filename='img/facebook.png') }}" height="40">
+                    </div>
+                    <div class="col-4">
+                        <img src="{{ url_for('static', filename='img/twitter.png') }}" height="40">
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <h5>Fonctionnalités</h5>
+            </div>
+        </div>
+
+    </footer>
+    <script>
+        $(document).ready(function() {
+            $('#sidebarToggle').on('click', function() {
+                $('.sidebar-filtre').toggleClass('active');
+                $('.sidebar-filtre').toggleClass('collapsed');
+                $('.col-lg-9').toggleClass('col-lg-12');
+            });
+        });
+    </script>
+    <script>
+        const boutonOuvrir = document.getElementById('monBouton');
+        const fenetreContextuelle = document.getElementById('maFenetreContextuelle');
+        const boutonFermer = document.getElementById('fermerBouton');
+
+        boutonOuvrir.addEventListener('click', () => {
+          fenetreContextuelle.style.display = 'block';
+        });
+
+        boutonFermer.addEventListener('click', () => {
+          fenetreContextuelle.style.display = 'none';
+        });
+    </script>
+    {% block script_fin %}
+    {% endblock %}
+</body>
+</html>

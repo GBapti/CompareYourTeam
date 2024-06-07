@@ -1,0 +1,324 @@
+{% extends "baseV3.html" %}
+
+{% block css_script %}
+    <!-- Inclusion d'ApexCharts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#TeamList').change(function() {
+                $('form[name="SelectionTeam"]').submit();
+            });
+
+            $('#CompetitionList').change(function() {
+                $('form[name="SelectionDiv"]').submit();
+            });
+
+            $('#CompetitionCheck').change(function() {
+                $('form[name="SelectionTeam"]').submit();
+            });
+        });
+
+    </script>
+{% endblock %}
+
+{% block filtre %}
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed show" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Football Team
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <form action="{{ url_for('team_selection_unique') }}" method="POST" name="SelectionTeam">
+                                            <input type="hidden" name="form_name" value="SelectionTeam">
+                                            <strong>Sélectionner une équipe :</strong>
+                                                <div class="form-group">
+                                                    <label for="TeamList"></label>
+                                                    <select class="form-control" name="TeamList" id="TeamList" style="width: 100%;">
+                                                        <option value="">Sélectionnez une équipe</option>
+                                                        {% for team in teams_Liste %}
+                                                            <option value="{{ team }}" {% if team == selected_team %}selected{% endif %}>{{ team }}</option>
+                                                        {% endfor %}
+
+                                                    </select>
+                                                    {% for element in divisionCases %}
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" name="CompetitionCheck" id="CompetitionCheck" value="{{ element }}" {% if element in divisionCasesValid %}checked{% endif %}>
+                                                            <label class="form-check-label" for="CompetitionCheck">{{ element }}</label>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed show" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                        Football Competition
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <form action="{{ url_for('competition_selection_unique') }}" method="POST" name="SelectionDiv">
+                                            <input type="hidden" name="form_name" value="SelectionDiv">
+                                            <strong>Sélectionner une compétition :</strong>
+
+                                                <div class="form-group">
+                                                    <label for="CompetitionList"></label>
+                                                    <select class="form-control" name="CompetitionList" id="CompetitionList" style="width: 100%;">
+                                                        <option value="">Sélectionnez une compétition</option>
+                                                        {% for div in competitions_Liste %}
+                                                            <option value="{{ div }}" {% if div == selected_division %}selected{% endif %}>{{ div }}</option>
+                                                        {% endfor %}
+                                                        <!-- Ajoutez autant d'options que nécessaire -->
+                                                    </select>
+                                                </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed show" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                        Football Player
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <strong>Le contenu arrivera prochainement</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+{% endblock %}
+
+{% block redirection_date1 %}
+                action="{{ url_for('team_selection_unique') }}"
+{% endblock %}
+{% block redirection_date2 %}
+                action="{{ url_for('team_selection_unique') }}"
+{% endblock %}
+
+{% block tableau_bord %}
+    {% if "Aucune Données" != type_sortie %}
+        <H2>Statistiques</H2>
+        <H4>Résultats</H4>
+        <br>
+        <div class="progress-stacked" style="height: 30px;">
+            <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="{{ WinPercent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ WinPercent }}%; height: 100%;">
+                <div class="progress-bar" style="background-color: #0057E7;"> {{ WinPercent }}%</div>
+                <div class="progress-bar-label" style="position: absolute; color: #000; font-weight: bold; margin-top: -20px; ">Victoires ({{ nbWin }})</div>
+            </div>
+            <div class="progress" role="progressbar" aria-label="Segment two" aria-valuenow="{{ NulPercent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ NulPercent }}% ; height: 100%; ">
+                <div class="progress-bar" style="background-color: #ABB2B9;">{{ NulPercent }}%</div>
+                <div class="progress-bar-label" style="position: absolute; color: #000; font-weight: bold; margin-top: -20px; ">Matches Nuls ({{ nbNul }})</div>
+            </div>
+            <div class="progress" role="progressbar" aria-label="Segment three" aria-valuenow="{{ LosePercent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ LosePercent }}% ; height: 100%; background-color: #FF0000;">
+                <div class="progress-bar" style="background-color: #FFCC00;">{{ LosePercent }}%</div>
+                <div class="progress-bar-label" style="position: absolute; color: #000; font-weight: bold; margin-top: -20px; ">Défaites ({{ nbLose }})</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div id="WinChart"></div>
+            </div>
+            <div class="col-4">
+                <div id="NulChart"></div>
+            </div>
+            <div class="col-4">
+                <div id="LoseChart"></div>
+            </div>
+        </div>
+        <div class="row" style="text-align:center;">
+            <div class="col-6">
+                <h5>A Domicile</h5>
+                <br>
+                <div class="progress-stacked" style="height: 30px;">
+                    <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="{{ percent_win_home }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent_win_home }}%; height: 100%;">
+                        <div class="progress-bar" style="background-color: #0057E7;"> {{ percent_win_home }}%</div>
+                        <div class="progress-bar-label" style="position: absolute; color: #000; font-weight: bold; margin-top: -20px; ">({{ nbWinHome }})</div>
+                    </div>
+                    <div class="progress" role="progressbar" aria-label="Segment two" aria-valuenow="{{ percent_nul_home }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent_nul_home }}% ; height: 100%; ">
+                        <div class="progress-bar" style="background-color: #ABB2B9;">{{ percent_nul_home }}%</div>
+                        <div class="progress-bar-label" style="position: absolute; color: #000; font-weight: bold; margin-top: -20px; ">({{ nbNulHome }})</div>
+                    </div>
+                    <div class="progress" role="progressbar" aria-label="Segment three" aria-valuenow="{{ percent_lose_home }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent_lose_home }}% ; height: 100%; background-color: #FF0000;">
+                        <div class="progress-bar" style="background-color: #FFCC00;">{{ percent_lose_home }}%</div>
+                        <div class="progress-bar-label" style="position: absolute; color: #000; font-weight: bold; margin-top: -20px; ">({{ nbLoseHome }})</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <h5>A l'exterieur</h5>
+                <br>
+                <div class="progress-stacked" style="height: 30px;">
+                    <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="{{ percent_win_away }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent_win_away }}%; height: 100%;">
+                        <div class="progress-bar" style="background-color: #0057E7;"> {{ percent_win_away }}%</div>
+                        <div class="progress-bar-label" style="position: absolute; color: #000; font-weight: bold; margin-top: -20px; ">({{ nbWinAway }})</div>
+                    </div>
+                    <div class="progress" role="progressbar" aria-label="Segment two" aria-valuenow="{{ percent_nul_away }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent_nul_away }}% ; height: 100%; ">
+                        <div class="progress-bar" style="background-color: #ABB2B9;">{{ percent_nul_away }}%</div>
+                        <div class="progress-bar-label" style="position: absolute; color: #000; font-weight: bold; margin-top: -20px; ">({{ nbNulAway }})</div>
+                    </div>
+                    <div class="progress" role="progressbar" aria-label="Segment three" aria-valuenow="{{ percent_lose_away }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent_lose_away }}% ; height: 100%; background-color: #FF0000;">
+                        <div class="progress-bar" style="background-color: #FFCC00;">{{ percent_lose_away }}%</div>
+                        <div class="progress-bar-label" style="position: absolute; color: #000; font-weight: bold; margin-top: -20px; ">({{ nbLoseAway }})</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding:10px">
+
+            <div class="col-3">
+                <div class="card text-center">
+
+                    <div class="card-body">
+                        <h2><strong>{{team_win_max}}</strong></h2>
+                        <H6>est l'équipe qui a le plus de victoires : <strong>{{max_win}} </strong></H6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-1">
+
+            </div>
+            <div class="col-3">
+                <div class="card text-center">
+
+                    <div class="card-body">
+                        <h2><strong>{{team_nul_max}}</strong></h2>
+                        <H6>est l'équipe qui a le plus de matches nuls : <strong>{{max_nul}}</strong></H6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-1">
+
+            </div>
+            <div class="col-3">
+                <div class="card text-center">
+
+                    <div class="card-body">
+                        <h2><strong>{{team_lose_max}}</strong></h2>
+                        <H6>est l'équipe qui a le plus de défaites : <strong>{{max_lose}}</strong></H6>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="progress-stacked" style="height: 30px;">
+            <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="{{ percent_goal_team_scored }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent_goal_team_scored }}%; height: 100%;">
+                <div class="progress-bar" style="background-color: #1ABC9C;">{{ percent_goal_team_scored }}%</div>
+                <div class="progress-bar-label" style="position: absolute; color: #000; font-weight: bold; margin-top: -20px; ">Buts marqués ({{ goal_team_scored }})</div>
+            </div>
+
+            <div class="progress" role="progressbar" aria-label="Segment two" aria-valuenow="{{ percent_goal_team_conceded }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent_goal_team_conceded }}% ; height: 100%;">
+                <div class="progress-bar" style="background-color: #F39C12;">{{ percent_goal_team_conceded }}%</div>
+                <div class="progress-bar-label" style="position: absolute; color: #000; font-weight: bold; margin-top: -20px; ">Buts encaissés ({{ goal_team_conceded }})</div>
+            </div>
+        </div>
+        <h2 class="my-4">Données de Matchs</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Équipe Domicile</th>
+                    <th scope="col">Buts Domicile</th>
+                    <th scope="col">Buts Extérieur</th>
+                    <th scope="col">Équipe Extérieur</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for index, row in databases.iterrows() %}
+                <tr>
+                    <td>{{ row['Date'] }}</td>
+                    <td>{{ row['HomeTeam'] }}</td>
+                    <td>{{ row['NB BUT DOMICILE'] }}</td>
+                    <td>{{ row['NB BUT EXTERIEUR'] }}</td>
+                    <td>{{ row['AwayTeam'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h1>{{type_sortie}}</h1>
+    {% endif %}
+
+{% endblock %}
+
+{% block script_fin %}
+<script>
+        // Initialiser la bibliothèque Select2 sur les éléments avec la classe "select2"
+        $(document).ready(function() {
+            $('#TeamList').select2();
+            $('#CompetitionList').select2();
+        });
+</script>
+<script>
+    var Winoptions = {
+        series: [{{nbWinAway}}, {{nbWinHome}}],
+        labels: ["Victoires à l'exterieur","Victoires à domicile"],
+        chart: {
+            height: 230,
+            type: 'donut',
+        },
+        title: {
+            text: 'Victoire',
+            align: 'center'
+        },
+        legend: {
+            show: false,
+        },
+        colors: ['#0B41A7', '#5F96FF'],
+    };
+
+    var WinChart = new ApexCharts(document.querySelector("#WinChart"), Winoptions);
+    WinChart.render();
+</script>
+<script>
+    var Nuloptions = {
+        series: [{{nbNulAway}}, {{nbNulHome}}],
+        labels: ["Matches Nuls à l'exterieur","Matches Nuls à domicile"],
+        chart: {
+            height: 230,
+            type: 'donut',
+        },
+        title: {
+            text: 'Matches Nuls',
+            align: 'center'
+        },
+        legend: {
+            show: false,
+        },
+        colors: ['#7C7C7C', '#D8D8D8'],
+    };
+
+    var NulChart = new ApexCharts(document.querySelector("#NulChart"), Nuloptions);
+    NulChart.render();
+</script>
+<script>
+    var Loseoptions = {
+        series: [{{nbLoseAway}}, {{nbLoseHome}}],
+        labels: ["Défaites à l'exterieur","Défaites à domicile"],
+        chart: {
+            height: 230,
+            type: 'donut',
+        },
+        title: {
+            text: 'Défaites',
+            align: 'center'
+        },
+        legend: {
+            show: false,
+        },
+        colors: ['#F0C000', '#FFDA48'],
+    };
+
+    var LoseChart = new ApexCharts(document.querySelector("#LoseChart"), Loseoptions);
+    LoseChart.render();
+</script>
+
+{% endblock %}

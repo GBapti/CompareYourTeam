@@ -1,0 +1,53 @@
+
+.btn-square {
+    width: 150px;
+    height: 150px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.3s;
+    background-color: #001830;
+    color: white;
+    border: 1px solid #001830;
+}
+.btn-primary.btn-square:hover {
+    background-color: white;
+    color: #001830;
+    border: 1px solid #001830;
+}
+.navbar-date{
+    background-color:#001830;
+    color:white;
+    padding: 3px;
+    text-align : center;
+    width: 100%;
+
+}
+.sidebar-filtre{
+    background-color:#001830;
+    color:white;
+    transition: all 0.3s ease; /* Utilisation de "all" pour inclure tous les changements de style dans la transition */
+    overflow-x: hidden;
+}
+.sidebar-filtre.collapsed {
+    width: 0;
+    position: absolute;
+    left: -250px; /* ou toute autre valeur négative pour la largeur de la sidebar */
+}
+
+#maFenetreContextuelle {
+  position: fixed; /* Positionnement absolu */
+  top: 50%; /* Positionnement vertical centré */
+  left: 50%; /* Positionnement horizontal centré */
+  transform: translate(-50%, -50%); /* Ajustement du positionnement */
+  width: 1200px; /* Largeur de la fenêtre contextuelle */
+  height: auto; /* Hauteur de la fenêtre contextuelle */
+  max-height: 90%;
+  background-color: #fff; /* Couleur de fond */
+  padding: 20px; /* Rembourrage interne */
+  border: 1px solid #ccc; /* Bordure */
+  z-index: 1000; /* Positionnement z-index élevé pour superposer */
+  display: none; /* Masquer initialement */
+  overflow-y: auto;
+}

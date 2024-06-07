@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Mon Site Bootstrap</title>
+    {% block css_script %}
+    {% endblock %}
+</head>
+<body>
+    <nav class="navbar" style="background-color:#DAE6FF">
+        <div class="container">
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Etude de données
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ url_for('accueil_selection_unique') }}">Sélection Unique</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('accueil_selection_multiple') }}">Sélections multiples</a></li>
+                </ul>
+            </div>
+
+            <a class="navbar-brand d-flex align-items-center mx-auto" href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='img/Site_Icon.png') }}" alt="Logo" height="55" class="d-inline-block align-left">
+                <h1>Compare Your Team</h1>
+            </a>
+
+            <button class="btn btn-outline-success my-2 my-sm-0" type="button">Se connecter</button>
+        </div>
+    </nav>
+
+    <div class="container-fluid" >
+        <div class="row">
+
+            <div class="col-3 sidebar-filtre">
+                {% block filtre %}
+                {% endblock %}
+            </div>
+            <div class="col-9" style="padding-left:0px;padding-right:0px;">
+                {% block date %}
+                {% endblock %}
+                <div class="main-content px-3">
+                    {% block tableau_bord %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block script_fin %}
+    {% endblock %}
+</body>
+</html>

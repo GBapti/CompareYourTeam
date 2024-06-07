@@ -1,0 +1,28 @@
+{% extends "baseV3.html" %}
+
+{% block css_script %}
+    <script>
+        $(document).ready(function() {
+            $('#TeamList').change(function() {
+                $('form[name="SelectionTeamDivPlayer"]').submit();
+            });
+
+            $('#CompetitionList').change(function() {
+                $('form[name="SelectionTeamDivPlayer"]').submit();
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block filtre %}
+{% endblock %}
+
+{% block redirection_date1 %}
+                action="{{ url_for('accueil_selection_multiple') }}"
+{% endblock %}
+{% block redirection_date2 %}
+                action="{{ url_for('accueil_selection_multiple') }}"
+{% endblock %}
+
+{% block tableau_bord %}
+{% endblock %}

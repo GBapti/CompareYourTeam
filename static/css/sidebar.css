@@ -1,0 +1,11 @@
+.sidebar-filtre {
+    width: 250px; /* ou toute autre largeur souhaitée */
+    transition: all 0.3s ease; /* Utilisation de "all" pour inclure tous les changements de style dans la transition */
+    overflow-x: hidden;
+}
+
+.sidebar-filtre.collapsed {
+    width: 0;
+    position: absolute;
+    left: -250px; /* ou toute autre valeur négative pour la largeur de la sidebar */
+}

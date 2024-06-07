@@ -1,0 +1,105 @@
+{% extends "baseV3.html" %}
+
+{% block css_script %}
+{% endblock %}
+
+{% block filtre %}
+                <h2>Vous pourrez selectionner des filtres ici</h2>
+{% endblock %}
+
+{% block redirection_date1 %}
+
+                        action="{{ url_for('home') }}"
+
+{% endblock %}
+{% block redirection_date2 %}
+
+                        action="{{ url_for('home') }}"
+
+{% endblock %}
+
+{% block tableau_bord %}
+
+                    <h1>Bienvene sur Compare Your Team</h1>
+                    <div style="display:flex;">
+                        <p>Pour être guider sur l'utilisation de l'application, vous pouvez appuyer sur le bouton suivant :</p>
+
+                        <img src="{{ url_for('static', filename='img/information_Icon.png') }}" height="20">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-3">
+                        </div>
+                        <div class="col-2">
+                            <a href="{{ url_for('accueil_selection_unique') }}" class="btn btn-square"><H3>Sélection Unique</H3></a>
+                        </div>
+                        <div class="col-2">
+                        </div>
+                        <div class="col-2">
+                            <a href="{{ url_for('accueil_selection_multiple') }}" class="btn btn-square"><H3>Sélection Multiple</H3></a>
+                        </div>
+                        <div class="col-3">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-2">
+                            <div class="card text-center">
+                                <img src="{{ url_for('static', filename='img/Match_Icon.png') }}" class="card-img-top" alt="..." height="100" width="100">
+                                <div class="card-body">
+                                    <h2><strong>{{nb_matches}}</strong></h2>
+                                    <H6>Matches</H6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="card text-center">
+                                <img src="{{ url_for('static', filename='img/But_Icon.png') }}" class="card-img-top" alt="..." height="100">
+                                <div class="card-body">
+                                    <h2><strong>{{nb_goals}}</strong></h2>
+                                    <H6>Buts</H6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="card text-center">
+                                <img src="{{ url_for('static', filename='img/Club_Icon.png') }}" class="card-img-top" alt="..." height="100">
+                                <div class="card-body">
+                                    <h2><strong>{{nb_teams}}</strong></h2>
+                                    <H6>Equipes</H6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="card text-center">
+                                <img src="{{ url_for('static', filename='img/Saison_Icon.png') }}" class="card-img-top" alt="..." height="100">
+                                <div class="card-body">
+                                    <h2><strong>{{nb_saisons}}</strong></h2>
+                                    <H6>Saisons</H6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="card text-center">
+                                <img src="{{ url_for('static', filename='img/Competition_Icon.png') }}" class="card-img-top" alt="..." height="100">
+                                <div class="card-body">
+                                    <h2><strong>{{nb_competitions}}</strong></h2>
+                                    <H6>Compétitions</H6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="card text-center">
+                                <img src="{{ url_for('static', filename='img/Site_Icon.png') }}" class="card-img-top" alt="..." height="100">
+                                <div class="card-body">
+                                    <h2 ><strong>?</strong></h2>
+                                    <H6>Joueurs</H6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+{% endblock %}
+
+{% block script_fin %}
+
+{% endblock %}
